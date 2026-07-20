@@ -8,18 +8,18 @@ type TipoFiltro = 'todos' | 'plato' | 'sub_receta';
 
 export default function Home() {
   const [recetas, setRecetas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   
   // Filtros
   const [tipoFiltro, setTipoFiltro] = useState<TipoFiltro>('todos');
   const [foodCostFiltro, setFoodCostFiltro] = useState<string[]>([]);
   const [margenFiltro, setMargenFiltro] = useState<string[]>([]);
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState<string>('');
   
   // Vista y paginación
   const [vistaTipo, setVistaTipo] = useState<VistaTipo>('grid');
-  const [paginaActual, setPaginaActual] = useState(1);
-  const [ordenarPor, setOrdenarPor] = useState('nombre');
+  const [paginaActual, setPaginaActual] = useState<number>(1);
+  const [ordenarPor, setOrdenarPor] = useState<string>('nombre');
   const recetasPorPagina = 12;
 
   useEffect(() => {
@@ -211,7 +211,7 @@ export default function Home() {
         <div className="px-8 py-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold">🍽️ Restaurant Manager</h1>
+              <h1 className="text-3xl font-bold">🍽️ KOST Software</h1>
               <p className="text-cyan-100 mt-1">Gestión inteligente de costes y recetas</p>
             </div>
             <a
@@ -338,7 +338,7 @@ export default function Home() {
             <div className="space-y-2">
               {[
                 { value: '<25', label: '<25% (Óptimo)', emoji: '🟢' },
-                { value: '25-33', label: '25-33% (Aceptable)', emoji: '' },
+                { value: '25-33', label: '25-33% (Aceptable)', emoji: '🟡' },
                 { value: '>33', label: '>33% (Alto)', emoji: '🟠' }
               ].map((opcion) => (
                 <label key={opcion.value} className="flex items-center cursor-pointer hover:bg-cyan-50 p-2 rounded">
@@ -367,7 +367,7 @@ export default function Home() {
             <div className="space-y-2">
               {[
                 { value: '>=60', label: '≥60% (Excelente)', emoji: '🟢' },
-                { value: '50-60', label: '50-60% (Bueno)', emoji: '' },
+                { value: '50-60', label: '50-60% (Bueno)', emoji: '🟡' },
                 { value: '<50', label: '<50% (Bajo)', emoji: '🟠' }
               ].map((opcion) => (
                 <label key={opcion.value} className="flex items-center cursor-pointer hover:bg-cyan-50 p-2 rounded">
@@ -540,7 +540,7 @@ export default function Home() {
                           
                           <div>
                             <p className="text-sm text-gray-500">Porciones</p>
-                            <p className="font-bold text-gray-900">{receta.porciones}</p>
+                            <p className="font-bold text-gray-900">{receta.porciones || '-'}</p>
                           </div>
                         </div>
                       </div>
