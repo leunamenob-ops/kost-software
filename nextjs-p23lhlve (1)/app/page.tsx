@@ -79,20 +79,23 @@ export default function Home() {
     }
   }
 
-  function calcularPrecioNeto(precioVenta: number, ivaPorcentaje: number = 10) {
+  // ✅ CORREGIDO: Tipo de retorno explícito 'number'
+  function calcularPrecioNeto(precioVenta: number, ivaPorcentaje: number = 10): number {
     if (precioVenta <= 0) return 0;
     return precioVenta / (1 + ivaPorcentaje / 100);
   }
 
-  function calcularFoodCost(costeTotal: number, precioVenta: number, ivaPorcentaje: number = 10) {
+  // ✅ CORREGIDO: Tipo de retorno explícito 'string' y return "0.00" en lugar de 0
+  function calcularFoodCost(costeTotal: number, precioVenta: number, ivaPorcentaje: number = 10): string {
     const precioNeto = calcularPrecioNeto(precioVenta, ivaPorcentaje);
-    if (precioNeto <= 0) return 0;
+    if (precioNeto <= 0) return "0.00";
     return ((costeTotal / precioNeto) * 100).toFixed(2);
   }
 
-  function calcularMargenNeto(costeTotal: number, precioVenta: number, ivaPorcentaje: number = 10) {
+  // ✅ CORREGIDO: Tipo de retorno explícito 'string'
+  function calcularMargenNeto(costeTotal: number, precioVenta: number, ivaPorcentaje: number = 10): string {
     const precioNeto = calcularPrecioNeto(precioVenta, ivaPorcentaje);
-    if (precioNeto <= 0) return '0';
+    if (precioNeto <= 0) return "0.00";
     return (((precioNeto - costeTotal) / precioNeto) * 100).toFixed(2);
   }
 
@@ -122,10 +125,8 @@ export default function Home() {
 
   // Filtrar recetas
   const recetasFiltradas = recetas.filter((receta: any) => {
-    // Filtro por tipo
     if (tipoFiltro !== 'todos' && receta.tipo !== tipoFiltro) return false;
     
-    // Filtro por búsqueda
     if (busqueda) {
       const busquedaLower = busqueda.toLowerCase();
       const coincideNombre = receta.nombre.toLowerCase().includes(busquedaLower);
@@ -136,7 +137,6 @@ export default function Home() {
       if (!coincideNombre && !coincideIngrediente) return false;
     }
     
-    // Filtro por Food Cost
     const foodCost = parseFloat(calcularFoodCost(receta.coste_total || 0, receta.precio_venta || 0));
     if (foodCostFiltro.length > 0) {
       let coincideFC = false;
@@ -146,7 +146,6 @@ export default function Home() {
       if (!coincideFC) return false;
     }
     
-    // Filtro por Margen
     const margen = parseFloat(calcularMargenNeto(receta.coste_total || 0, receta.precio_venta || 0));
     if (margenFiltro.length > 0) {
       let coincideMargen = false;
@@ -206,7 +205,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-cyan-50">
-      {/* Header */}
       <header className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg">
         <div className="px-8 py-6">
           <div className="flex justify-between items-center">
@@ -224,7 +222,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Barra de búsqueda y controles */}
       <div className="bg-white border-b border-cyan-200 px-8 py-4">
         <div className="flex gap-4 items-center flex-wrap">
           <div className="flex-1 min-w-64">
@@ -280,13 +277,11 @@ export default function Home() {
       </div>
 
       <div className="flex">
-        {/* Sidebar - Filtros */}
         <aside className="w-72 bg-white border-r border-cyan-200 p-6 min-h-[calc(100vh-200px)]">
           <h2 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-cyan-600 pb-2">
             🔍 Filtros
           </h2>
 
-          {/* Tipo de receta */}
           <div className="mb-6">
             <h3 className="font-semibold text-gray-700 mb-3">📂 Tipo</h3>
             <div className="space-y-2">
@@ -332,7 +327,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Food Cost */}
           <div className="mb-6">
             <h3 className="font-semibold text-gray-700 mb-3">📊 Food Cost</h3>
             <div className="space-y-2">
@@ -361,7 +355,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Margen Neto */}
           <div className="mb-6">
             <h3 className="font-semibold text-gray-700 mb-3">💚 Margen Neto</h3>
             <div className="space-y-2">
@@ -390,7 +383,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Botón Reset */}
           <button
             onClick={resetearFiltros}
             className="w-full py-2 border-2 border-cyan-600 text-cyan-600 rounded-lg hover:bg-cyan-50 font-semibold transition-colors"
@@ -399,9 +391,7 @@ export default function Home() {
           </button>
         </aside>
 
-        {/* Contenido principal */}
         <main className="flex-1 p-8">
-          {/* Estadísticas */}
           <div className="mb-6 flex justify-between items-center">
             <p className="text-gray-600">
               Mostrando <span className="font-semibold text-cyan-900">{recetasPagina.length}</span> de{' '}
@@ -412,7 +402,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Grid de recetas */}
           {vistaTipo === 'grid' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {recetasPagina.map((receta: any) => {
@@ -488,7 +477,6 @@ export default function Home() {
               })}
             </div>
           ) : (
-            /* Vista de lista */
             <div className="space-y-4">
               {recetasPagina.map((receta: any) => {
                 const foodCost = parseFloat(calcularFoodCost(receta.coste_total || 0, receta.precio_venta || 0));
@@ -566,7 +554,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Sin resultados */}
           {recetasPagina.length === 0 && (
             <div className="text-center py-16">
               <div className="text-6xl mb-4">🔍</div>
@@ -575,7 +562,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Paginación */}
           {totalPaginas > 1 && (
             <div className="mt-8 flex justify-center items-center gap-2">
               <button
