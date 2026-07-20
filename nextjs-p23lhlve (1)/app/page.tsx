@@ -7,7 +7,7 @@ type VistaTipo = 'grid' | 'lista';
 type TipoFiltro = 'todos' | 'plato' | 'sub_receta';
 
 export default function Home() {
-  const [recetas, setRecetas] = useState([]);
+  const [recetas, setRecetas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Filtros
